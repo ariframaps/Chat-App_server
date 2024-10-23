@@ -27,4 +27,41 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = { User };
+const DBgetUser = async (email) => {
+  const user = await User.findOne({ email });
+  return user;
+};
+
+const DBgetAllUsers = async () => {
+  const allUsers = await User.find();
+  return allUsers;
+};
+
+const DBaddUser = async (data, hashedPwd) => {
+  try {
+    const newUser = new User({
+      username: data.username,
+      email: data.email,
+      password: hashedPwd,
+    });
+
+    await newUser.save();
+    console.log("register successfull");
+    return newUser;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+const DBupdateUser = async (id, objectToUpdate) => {
+  try {
+    await User.findByIdAndUpdate(id, objectToUpdate);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+module.exports = { User, DBaddUser, DBgetAllUsers, DBgetUser, DBupdateUser };

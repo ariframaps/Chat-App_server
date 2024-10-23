@@ -1,8 +1,7 @@
-const { register, login } = require("../controllers/userController");
+const { updateUser } = require("../controllers/userController");
 
-const router = require("express").Router();
+const userRoutes = require("express").Router();
 
-router.post("/register", register);
-router.post("/login", login);
+userRoutes.post("/set-avatar/:id", updateUser); //set avatar route
 
-module.exports = router;
+module.exports = userRoutes;
