@@ -34,7 +34,17 @@ const DBgetUser = async (email) => {
 
 const DBgetAllUsers = async () => {
   const allUsers = await User.find();
-  return allUsers;
+
+  // Hapus field password dari setiap user
+  const usersWithoutPasswords = allUsers.map((user) => {
+    const userObject = user.toObject(); // Ubah Mongoose document jadi plain object
+    delete userObject.password; // Hapus password
+    delete userObject._id;
+    delete userObject.__v;
+    return userObject;
+  });
+
+  return usersWithoutPasswords;
 };
 
 const DBaddUser = async (data, hashedPwd) => {
